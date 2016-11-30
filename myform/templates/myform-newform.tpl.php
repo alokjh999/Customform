@@ -3,7 +3,7 @@
 
         <div class="row">
             <div class="small-12 columns">
-                <h5>Contact Information</h5>
+                <h5>Pls fill the form</h5>
             </div>
         </div>
 
