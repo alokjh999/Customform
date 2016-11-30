@@ -1,0 +1,60 @@
+<?php
+
+//Set up database schema for new form
+function myform_schema() {
+	$schema = array();
+	
+	$schema['myform_data'] = array(
+		'description' => t('A table for holding the myform data!'),
+		'fields' => array(
+			'person_id' => array(
+				'description' => t('Auto increment of the person ID'),
+				'type' => 'serial',
+				'unsigned' => TRUE,
+				'not null' => TRUE,
+			),
+			'name' => array(
+				'description' => t('Person name.'),
+				'type' => 'varchar',
+				'length' => 64,
+				'not null' => TRUE,
+			),
+			'email' => array(
+				'description' => t('Person email address'),
+				'type' => 'varchar',
+				'length' => 64,
+				'not null' => TRUE
+			),
+			'mobile' => array(
+				'description' => t('Person mobile number'),
+				'type' => 'varchar',
+				'length' => 64,
+				'not null' => TRUE
+			),
+			'address' => array(
+				'description' => t('Person address'),
+				'type' => 'varchar',
+				'length' => 64,
+				'not null' => FALSE,
+			),
+			'city' => array(
+				'description' => t('Person City'),
+				'type' => 'varchar',
+				'length' => 64,
+				'not null' => FALSE,
+			),
+			'state' => array(
+				'description' => t('Person State'),
+				'type' => 'varchar',
+				'length' => 64,
+				'not null' => FALSE,
+			),
+		),
+		'primary_key' => array('person_id'),
+	);
+	return $schema;
+}
+ 
+
+
+

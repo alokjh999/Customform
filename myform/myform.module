@@ -1,0 +1,134 @@
+<?php
+/**
+* Implement hook_help
+*/
+
+function myform_help($path,$arg){
+	if($path == 'admin/help#myform'){
+		return t('Custom module for a simple form');
+	}
+}
+
+/**
+* Implement hook_menu
+*/
+
+function myform_menu() {
+  $items = array();
+
+  $items['newform'] = array(  //this will create a URL that will call this form at "newform"
+    'title' => 'My Form', //page title
+    'description' => 'My custom form.',
+    'page callback' => 'drupal_get_form', //When page is accesses this function is called
+    'page arguments' => array('myform_newform'), //Name of the form
+    'access callback' => TRUE
+  );
+
+  return $items;
+}
+
+function myform_newform($form, &$form_state) {
+	$form['name'] = array(
+		'#title' => t('Name'),
+		'#description' => t('Person name.'),
+		'#type' => 'textfield',
+		'#required' => TRUE,
+	);
+
+    $form['email'] = array(
+        '#title' => 'Email',
+        '#description' => 'Enter a valid email address',
+        '#type' => 'textfield',
+        '#required' => TRUE,
+    );
+	$form['mobile'] = array(
+        '#title' => 'Mobile',
+        '#description' => 'Enter a valid mobile number',
+        '#type' => 'textfield',
+		'#maxlength' => 10,
+        '#required' => TRUE,
+    );
+	$form['address'] = array(
+		'#title' => 'Address',
+		'#description' => 'Enter your address.',
+		'#type' => 'textfield',
+		'#required' => FALSE,
+	);
+	$form['city'] = array(
+		'#title' => 'City',
+		'#description' => 'Enter city',
+		'#type' => 'textfield',
+		'#required' => FALSE,
+	
+	);
+	$form['state'] = array(
+		'#title' => 'State',
+		'#description' => 'Enter State',
+		'#type' => 'textfield',
+		'#required' => FALSE,
+	);
+     $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save'),
+    );
+    return $form;
+}
+
+//For validation
+function myform_newform_validate($form, &$form_state) {
+	$phone = $form_state['values']['mobile'];
+	$mail = $form_state['values']['email'];
+	if (strlen($phone) > 0 && !preg_match('/^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$/', $phone)) {
+		form_set_error('submitted][mobile', t('Mobile number must be in format xxxxxxxxxx.'));
+	}
+
+}
+
+
+//Form submit using hook_submit
+function myform_newform_submit($form, &$form_state) {
+	// Inserting data 
+	db_insert('myform_data') 
+		->fields(array(  
+			'name' => $form_state['values']['name'],  
+			'email' => $form_state['values']['email'],
+			'mobile' => $form_state['values']['mobile'],
+			'address' => $form_state['values']['address'],  
+			'city' => $form_state['values']['city'],
+			'state' => $form_state['values']['state'],
+		))
+		->execute();
+}
+
+
+function myform_views_api(){
+	return array(
+		'api' => 3,
+		'path' => drupal_get_path('module', 'myform') . '/views/',
+	);
+	
+}
+
+
+/*
+* Implements hook_theme
+*/
+function myform_theme() {
+    return array(
+        'myform-newform' => array(
+            'arguments' => array('form' => NULL),
+            'render element' => 'form',
+            'path' => drupal_get_path('module', 'myform') . '/templates',
+			'template' => 'myform-newform',
+        ),
+    );
+}
+
+
+
+
+
+
+
+
+

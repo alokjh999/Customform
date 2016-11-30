@@ -1,0 +1,6 @@
+name = Myform
+description = My Custom module.
+package = Drupal 7 My custom made module
+core = 7.x
+files[] = myform.module
+
